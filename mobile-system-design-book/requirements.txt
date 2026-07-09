@@ -1,0 +1,21 @@
+# Markdown parsing (CommonMark + GitHub-flavored behaviour: tables,
+# strikethrough, autolinks, raw HTML). Chosen over python-markdown because
+# the repository relies on GitHub rendering rules (lists interrupting
+# paragraphs, HTML lists inside table cells).
+markdown-it-py>=3.0
+
+# Official plugin set for markdown-it-py: heading anchors (GitHub-style
+# slugs), footnotes, task lists.
+mdit-py-plugins>=0.4
+
+# Required by markdown-it-py's "gfm-like" preset to autolink bare URLs.
+linkify-it-py>=2.0
+
+# Syntax highlighting for fenced code blocks (kotlin, swift, json, http, ...).
+Pygments>=2.17
+
+# HTML -> PDF with real CSS Paged Media support: page numbers, running
+# headers/footers, chapter page breaks, PDF bookmarks, and table-of-contents
+# page numbers via target-counter()/leader().
+# NOTE: needs the system Pango library (macOS: `brew install pango`).
+weasyprint>=62

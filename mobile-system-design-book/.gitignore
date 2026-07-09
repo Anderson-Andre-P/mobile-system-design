@@ -1,0 +1,10 @@
+# Virtual environment and caches
+.venv/
+__pycache__/
+*.pyc
+
+# Generated book output
+output/
+
+# macOS
+.DS_Store

@@ -1,0 +1,812 @@
+/* ==========================================================================
+   Book stylesheet (CSS Paged Media, rendered by WeasyPrint)
+
+   __PAGE_SIZE__ / __PAGE_HEIGHT__ are replaced at build time (config.py).
+
+   Design tokens (used consistently below):
+     Ink ............. #1f2937 (body)   #0f172a (headings, emphasis)
+     Muted ........... #64748b          #94a3b8 (faint)
+     Accent .......... #0369a1 (structure, links)   #38bdf8 (bright accent)
+     Tint ............ #f0f9ff (accent wash)
+     Borders ......... #e2e8f0          #cbd5e1 (stronger)
+     Surfaces ........ #f8fafc (subtle) #f6f8fa (code)
+     Radius .......... 2.5pt everywhere
+     Sans ............ Avenir Next / Helvetica Neue / Arial
+     Serif ........... Charter / Georgia
+     Mono ............ SF Mono / Menlo / Consolas
+   ========================================================================== */
+
+/* ---------- Page geometry, running headers and footers ---------- */
+
+@page {
+  size: __PAGE_SIZE__;
+  margin: 23mm 21mm 21mm 21mm;
+
+  @top-left {
+    content: string(book-title);
+    font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 7pt;
+    font-weight: 600;
+    letter-spacing: 1.2pt;
+    text-transform: uppercase;
+    color: #94a3b8;
+  }
+  @top-right {
+    content: string(chapter-title);
+    font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 7.5pt;
+    color: #64748b;
+    text-align: right;
+  }
+  @bottom-center {
+    content: "— " counter(page) " —";
+    font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 8pt;
+    color: #64748b;
+  }
+}
+
+/* Full-bleed cover page: no margins, no header, no footer. */
+@page cover {
+  margin: 0;
+  @top-left { content: none; }
+  @top-right { content: none; }
+  @bottom-center { content: none; }
+}
+
+/* Front matter (colophon, table of contents) and part dividers: footer only. */
+@page front {
+  @top-left { content: none; }
+  @top-right { content: none; }
+}
+
+@page part {
+  @top-left { content: none; }
+  @top-right { content: none; }
+}
+
+/* ---------- Base typography ---------- */
+
+html {
+  string-set: book-title "Mobile System Design";
+}
+
+body {
+  font-family: Charter, Georgia, "Times New Roman", serif;
+  font-size: 10pt;
+  line-height: 1.62;
+  color: #1f2937;
+  hyphens: auto;
+  margin: 0;
+  counter-reset: chapter;
+}
+
+p {
+  margin: 0 0 3.2mm 0;
+  orphans: 3;
+  widows: 3;
+}
+
+.chapter p {
+  text-align: justify;
+}
+
+.chapter li, .chapter figcaption, .chapter th, .chapter td {
+  text-align: left;
+}
+
+strong { color: #0f172a; }
+
+hr {
+  border: none;
+  border-top: 0.5pt solid #cbd5e1;
+  width: 40%;
+  margin: 7mm auto;
+}
+
+/* ---------- Hyperlinks ---------- */
+
+a {
+  color: #0369a1;
+  text-decoration: none;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+
+.chapter a {
+  border-bottom: 0.5pt solid #bae6fd;
+}
+
+/* No underline for image links (e.g. badges) or figure images. */
+div[align="center"] a, figure a {
+  border-bottom: none;
+}
+
+/* ---------- Headings ---------- */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #0f172a;
+  line-height: 1.25;
+  break-after: avoid;
+  hyphens: none;
+  text-align: left;
+}
+
+/* Chapter opener: eyebrow + large title + rule. */
+.chapter {
+  break-before: page;
+  counter-increment: chapter;
+}
+
+.chapter-eyebrow {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 9pt;
+  font-weight: 600;
+  letter-spacing: 2.5pt;
+  text-transform: uppercase;
+  color: #0369a1;
+  margin: 6mm 0 2.5mm 0;
+  text-align: left;
+}
+
+.chapter h1 {
+  string-set: chapter-title content();
+  font-size: 23pt;
+  font-weight: 700;
+  letter-spacing: -0.3pt;
+  margin: 0 0 4mm 0;
+  padding-bottom: 4mm;
+  border-bottom: 0.75pt solid #e2e8f0;
+}
+
+/* Body headings */
+h2 {
+  font-size: 14pt;
+  font-weight: 700;
+  margin: 9mm 0 3.2mm 0;
+  padding-bottom: 1.2mm;
+  border-bottom: 0.5pt solid #e2e8f0;
+}
+
+h3 {
+  font-size: 11.5pt;
+  font-weight: 600;
+  margin: 7mm 0 2.5mm 0;
+}
+
+h4 {
+  font-size: 10pt;
+  font-weight: 600;
+  letter-spacing: 0.2pt;
+  color: #334155;
+  margin: 5.5mm 0 2mm 0;
+}
+
+h5, h6 {
+  font-size: 9.5pt;
+  font-weight: 600;
+  color: #334155;
+  margin: 4.5mm 0 2mm 0;
+}
+
+/* First paragraph after the chapter title breathes a little more. */
+.chapter h1 + p {
+  margin-top: 4mm;
+}
+
+/* ---------- Cover ---------- */
+
+.cover {
+  page: cover;
+  position: relative;
+  width: 100%;
+  height: __PAGE_HEIGHT__;
+  background: linear-gradient(155deg, #0b1220 0%, #14213a 55%, #1e293b 100%);
+  color: #e2e8f0;
+}
+
+.cover-inner {
+  padding: 40mm 26mm 0 26mm;
+}
+
+.cover-eyebrow {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 9.5pt;
+  font-weight: 600;
+  letter-spacing: 3.5pt;
+  text-transform: uppercase;
+  color: #38bdf8;
+  margin: 0 0 7mm 0;
+}
+
+.cover-rule {
+  width: 26mm;
+  height: 1.1mm;
+  background: #38bdf8;
+  margin: 0 0 12mm 0;
+}
+
+.cover-title {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 29pt;
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.2pt;
+  color: #f8fafc;
+  margin: 0 0 9mm 0;
+  border: none;
+}
+
+.cover-subtitle {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12.5pt;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.cover-footer {
+  position: absolute;
+  bottom: 20mm;
+  left: 26mm;
+  right: 26mm;
+  border-top: 0.5pt solid #334155;
+  padding-top: 5mm;
+}
+
+.cover-author {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 11.5pt;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin: 0 0 1.5mm 0;
+}
+
+.cover-meta {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 9pt;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Bright accent strip along the bottom edge. */
+.cover::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.5mm;
+  background: linear-gradient(90deg, #38bdf8, #0369a1);
+}
+
+/* ---------- Colophon ---------- */
+
+.colophon {
+  page: front;
+  break-before: page;
+  margin-top: 150mm;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 8.5pt;
+  line-height: 1.65;
+  color: #64748b;
+  max-width: 125mm;
+}
+
+.colophon h2 {
+  font-size: 9pt;
+  font-weight: 600;
+  letter-spacing: 1.5pt;
+  text-transform: uppercase;
+  color: #334155;
+  border: none;
+  margin: 0 0 3mm 0;
+}
+
+.colophon p { margin-bottom: 2.5mm; }
+
+/* ---------- Table of contents ---------- */
+
+.toc {
+  page: front;
+  break-before: page;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.toc h1 {
+  font-size: 23pt;
+  margin: 6mm 0 8mm 0;
+  padding-bottom: 4mm;
+  border-bottom: 0.75pt solid #e2e8f0;
+}
+
+.toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc li { margin: 0; padding: 0; }
+
+.toc a {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+
+/* Dot leaders + page numbers on every entry. */
+.toc a::after {
+  content: leader(". ") " " target-counter(attr(href), page);
+  font-weight: 400;
+  font-size: 8pt;
+  color: #94a3b8;
+}
+
+.toc-part {
+  margin-top: 6.5mm;
+}
+
+.toc-part > a {
+  font-weight: 700;
+  font-size: 11pt;
+  color: #0f172a;
+  padding-bottom: 1.2mm;
+  border-bottom: 0.5pt solid #e2e8f0;
+  margin-bottom: 1.8mm;
+  break-after: avoid;
+}
+
+.toc-part-label {
+  color: #0369a1;
+}
+
+.toc-chapter {
+  margin: 0.8mm 0;
+}
+
+.toc-chapter > a {
+  font-weight: 600;
+  font-size: 9.5pt;
+  color: #1f2937;
+  line-height: 1.7;
+  break-after: avoid;
+}
+
+.toc-num {
+  display: inline-block;
+  min-width: 6.5mm;
+  color: #0369a1;
+}
+
+.toc-chapter ol {
+  padding-left: 6.5mm;
+  margin-bottom: 1.5mm;
+}
+
+.toc-l2 > a {
+  font-weight: 400;
+  font-size: 8.5pt;
+  color: #475569;
+  line-height: 1.65;
+}
+
+.toc-l3 > a {
+  font-weight: 400;
+  font-size: 8pt;
+  color: #94a3b8;
+  padding-left: 5mm;
+  line-height: 1.6;
+}
+
+/* ---------- Part divider pages ---------- */
+
+.part {
+  page: part;
+  break-before: page;
+  break-after: page;
+  margin-top: 52mm;
+}
+
+.part-eyebrow {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10pt;
+  font-weight: 600;
+  letter-spacing: 3.5pt;
+  text-transform: uppercase;
+  color: #0369a1;
+  margin: 0 0 4mm 0;
+}
+
+.part-title {
+  string-set: chapter-title content();
+  font-size: 27pt;
+  font-weight: 700;
+  letter-spacing: -0.3pt;
+  margin: 0 0 5mm 0;
+  border: none;
+}
+
+.part-rule {
+  width: 26mm;
+  height: 1.1mm;
+  background: #38bdf8;
+  margin: 0 0 7mm 0;
+}
+
+.part-desc {
+  font-size: 11pt;
+  font-style: italic;
+  line-height: 1.7;
+  color: #475569;
+  max-width: 125mm;
+  margin-bottom: 14mm;
+}
+
+.part-contents {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  max-width: 135mm;
+}
+
+.part-contents-label {
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 2pt;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin: 0 0 2.5mm 0;
+}
+
+.part-contents ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.part-contents li {
+  margin: 0;
+  padding: 1.6mm 0;
+  border-bottom: 0.4pt solid #eef2f7;
+}
+
+.part-contents a {
+  display: block;
+  font-size: 9.5pt;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.part-contents a::after {
+  content: leader(" ") " " target-counter(attr(href), page);
+  font-size: 8.5pt;
+  color: #94a3b8;
+}
+
+.part-ch-num {
+  display: inline-block;
+  min-width: 7mm;
+  font-weight: 700;
+  color: #0369a1;
+}
+
+/* ---------- Lists ---------- */
+
+ul, ol {
+  margin: 1mm 0 3.5mm 0;
+  padding-left: 6.5mm;
+}
+
+li {
+  margin: 0 0 1.3mm 0;
+  padding-left: 0.8mm;
+}
+
+/* Tighter rhythm for nested lists. */
+li > ul, li > ol {
+  margin: 1.1mm 0 1.1mm 0;
+  padding-left: 5.5mm;
+}
+
+li > ul > li, li > ol > li {
+  margin-bottom: 0.9mm;
+}
+
+/* Consistent, subdued markers per nesting level. */
+ul { list-style-type: disc; }
+ul ul { list-style-type: circle; }
+ul ul ul { list-style-type: square; }
+
+.chapter li::marker {
+  color: #0369a1;
+  font-size: 90%;
+}
+
+.chapter ol > li::marker {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 8.5pt;
+  font-weight: 600;
+  color: #0369a1;
+}
+
+/* ---------- Tables ---------- */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 4.5mm 0 5mm 0;
+  font-size: 8.5pt;
+  line-height: 1.5;
+  border: 0.5pt solid #cbd5e1;
+}
+
+thead th {
+  background: #1e293b;
+  color: #f8fafc;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.4pt;
+  padding: 2.2mm 2.5mm;
+  border: none;
+  border-right: 0.5pt solid #334155;
+  text-align: left;
+}
+
+td {
+  padding: 2.2mm 2.5mm;
+  vertical-align: top;
+  border: none;
+  border-right: 0.5pt solid #e2e8f0;
+  border-top: 0.5pt solid #e2e8f0;
+}
+
+tbody tr:nth-child(even) td {
+  background: #f8fafc;
+}
+
+/* Raw-HTML bullet lists embedded inside table cells. */
+td ul, td ol {
+  margin: 0;
+  padding-left: 3.8mm;
+}
+
+td li {
+  margin: 0 0 1.1mm 0;
+  padding-left: 0;
+}
+
+td li:last-child { margin-bottom: 0; }
+
+td p { margin: 0 0 1.5mm 0; }
+
+td code { font-size: 92%; }
+
+/* ---------- Inline code ---------- */
+
+code {
+  font-family: "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  font-size: 86%;
+  background: #f0f9ff;
+  color: #075985;
+  border: 0.5pt solid #dbeefb;
+  border-radius: 2.5pt;
+  padding: 0.3mm 1.4mm;
+  hyphens: none;
+  box-decoration-break: clone;
+}
+
+h1 code, h2 code, h3 code, h4 code {
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0;
+  font-size: 95%;
+}
+
+a code {
+  color: #0369a1;
+}
+
+/* ---------- Code blocks ---------- */
+
+pre {
+  background: #f6f8fa;
+  border: 0.5pt solid #e2e8f0;
+  border-radius: 2.5pt;
+  padding: 3.2mm 3.5mm;
+  margin: 3.5mm 0 4.5mm 0;
+  font-family: "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  font-size: 8.5pt;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  break-inside: avoid;
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: 100%;
+  color: #1f2937;
+}
+
+/* Pygments marks tokens its lexer can't parse with .err (red border by
+   default). The sources mix pseudo-syntax into fences (e.g. `// Request`
+   inside `http` blocks), so render those tokens as plain text instead.
+   (pre.highlight outranks the generated ".highlight .err" rule, which is
+   injected after this file.) */
+pre.highlight .err {
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+/* Language tag in the top-right corner of highlighted blocks. */
+pre[data-lang]::before {
+  content: attr(data-lang);
+  float: right;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 6.5pt;
+  font-weight: 600;
+  letter-spacing: 1pt;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin: -1mm -1mm 1mm 2mm;
+}
+
+/* ---------- Blockquotes (interviewer/candidate dialogues) ---------- */
+
+blockquote {
+  margin: 3.5mm 0 4mm 0;
+  padding: 2.8mm 4.5mm 2.2mm 4.5mm;
+  border-left: 2pt solid #7dd3fc;
+  border-radius: 0 2.5pt 2.5pt 0;
+  background: #f8fafc;
+  color: #334155;
+}
+
+blockquote p {
+  margin: 0 0 1.8mm 0;
+  text-align: left;
+}
+
+blockquote p:last-child { margin-bottom: 0; }
+
+/* Speaker labels in dialogue transcripts (each line starts with a bold
+   name; lines are joined by hard breaks, so style every bold run). */
+blockquote strong {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 90%;
+  letter-spacing: 0.3pt;
+  color: #0369a1;
+}
+
+/* ---------- Admonitions ---------- */
+
+.admonition {
+  margin: 3.5mm 0 4mm 0;
+  padding: 2.8mm 4.5mm 2.8mm 10.5mm;
+  border-radius: 2.5pt;
+  break-inside: avoid;
+  position: relative;
+}
+
+.admonition p {
+  margin: 0 0 1.8mm 0;
+  text-align: left;
+  font-size: 9.5pt;
+  line-height: 1.6;
+}
+
+.admonition p:last-child { margin-bottom: 0; }
+
+/* Icon disc in the left gutter of the admonition. */
+.admonition::before {
+  position: absolute;
+  left: 3.2mm;
+  top: 3mm;
+  width: 4.6mm;
+  height: 4.6mm;
+  border-radius: 50%;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 7.5pt;
+  font-weight: 700;
+  font-style: normal;
+  text-align: center;
+  line-height: 4.6mm;
+  color: #ffffff;
+}
+
+.admonition.note {
+  background: #f0f9ff;
+  border: 0.5pt solid #bae6fd;
+  border-left: 2pt solid #0284c7;
+}
+.admonition.note::before { content: "i"; background: #0284c7; }
+
+.admonition.tip {
+  background: #f0fdf4;
+  border: 0.5pt solid #bbf7d0;
+  border-left: 2pt solid #16a34a;
+}
+.admonition.tip::before { content: "✓"; background: #16a34a; }
+
+.admonition.warning {
+  background: #fffbeb;
+  border: 0.5pt solid #fde68a;
+  border-left: 2pt solid #d97706;
+}
+.admonition.warning::before { content: "!"; background: #d97706; }
+
+.admonition.important {
+  background: #faf5ff;
+  border: 0.5pt solid #e9d5ff;
+  border-left: 2pt solid #9333ea;
+}
+.admonition.important::before { content: "!"; background: #9333ea; }
+
+.admonition.caution {
+  background: #fff7ed;
+  border: 0.5pt solid #fed7aa;
+  border-left: 2pt solid #ea580c;
+}
+.admonition.caution::before { content: "!"; background: #ea580c; }
+
+.admonition em { color: #334155; }
+
+/* ---------- Figures and images ---------- */
+
+img {
+  max-width: 100%;
+}
+
+figure {
+  margin: 5mm 0 5.5mm 0;
+  text-align: center;
+  break-inside: avoid;
+}
+
+figure img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  max-height: 150mm;
+}
+
+figcaption {
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 8pt;
+  color: #64748b;
+  margin-top: 2.2mm;
+  text-align: center;
+}
+
+.figure-label {
+  font-weight: 600;
+  letter-spacing: 0.5pt;
+  text-transform: uppercase;
+  color: #0369a1;
+  margin-right: 2mm;
+}
+
+/* ---------- Footnotes (supported, though rare in the source) ---------- */
+
+.footnote {
+  font-size: 8.5pt;
+  color: #475569;
+  border-top: 0.5pt solid #e2e8f0;
+  margin-top: 6mm;
+  padding-top: 2mm;
+}
+
+/* ---------- PDF outline bookmarks ---------- */
+
+.chapter h1 { bookmark-level: 1; }
+.chapter h2 { bookmark-level: 2; }
+.chapter h3 { bookmark-level: 3; }
+.chapter h4, .chapter h5, .chapter h6 { bookmark-level: none; }
+.part-title { bookmark-level: 1; }
+.cover-title, .toc h1, .colophon h2 { bookmark-level: none; }
